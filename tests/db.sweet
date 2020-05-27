@@ -4,6 +4,7 @@ scheme Users:
 
         - name     => String
         - password => Password
-        - email    => Email
+        - email    => Email #hello world
+        - test
 
     # This is a comment
