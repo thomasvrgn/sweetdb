@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "sourceMap": false,
+      "outDir": "./src/build", //def
+      "module": "ES6",
+      "moduleResolution": "node",
+      "lib": [
+        "dom",
+        "es2015",
+        "es5",
+        "es6"
+      ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+  }
