@@ -14,6 +14,7 @@ export default class Parser {
 
     public code   : Array<String>  = []
     public types  : Object         = {}
+    public output : Array<String>  = []
 
     constructor (public file) {}
 
@@ -50,7 +51,7 @@ export default class Parser {
 
             let parent_type: String
 
-            console.log('module.exports = {')
+            this.output.push('module.exports = {')
 
             for (const index in this.code) {
                 let line = this.code[index].trim()
@@ -99,10 +100,10 @@ export default class Parser {
                         if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
                     }
                 }
-                console.log(line)
+                this.output.push(line)
             }
-            console.log('}')
-
+            this.output.push('}')
+            console.log(this.output.join('\n'))
         })
 
     }

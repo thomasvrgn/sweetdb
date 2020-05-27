@@ -11,6 +11,7 @@ var Parser = /** @class */ (function () {
         this.file = file;
         this.code = [];
         this.types = {};
+        this.output = [];
     }
     Parser.prototype.readAST = function (tree) {
         for (var _i = 0, tree_1 = tree; _i < tree_1.length; _i++) {
@@ -39,7 +40,7 @@ var Parser = /** @class */ (function () {
             var AST = Tabdown.parse(content);
             _this.readAST(AST.children);
             var parent_type;
-            console.log('module.exports = {');
+            _this.output.push('module.exports = {');
             for (var index in _this.code) {
                 var line = _this.code[index].trim();
                 if (line.endsWith('{')) {
@@ -82,9 +83,10 @@ var Parser = /** @class */ (function () {
                             line += ',';
                     }
                 }
-                console.log(line);
+                _this.output.push(line);
             }
-            console.log('}');
+            _this.output.push('}');
+            console.log(_this.output.join('\n'));
         });
     };
     return Parser;
