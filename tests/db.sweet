@@ -1,0 +1,9 @@
+scheme Users:
+
+    group Informations:
+
+        - name     => String
+        - password => Password
+        - email    => Email
+
+    # This is a comment

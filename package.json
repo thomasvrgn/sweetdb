@@ -1,0 +1,23 @@
+{
+  "name": "sweetdb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NessMC/sweetdb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NessMC/sweetdb/issues"
+  },
+  "homepage": "https://github.com/NessMC/sweetdb#readme"
+}
