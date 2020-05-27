@@ -5,4 +5,4 @@
  *
 /*/
 import Parser from './src/parser';
-new Parser('tests/type').parse();
+new Parser('tests/type').parse(function (code) { return console.log(code); });

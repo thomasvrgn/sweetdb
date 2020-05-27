@@ -38,73 +38,78 @@ export default class Parser {
         }
     }
 
-    public parse () {
+    public parse (callback: Function) {
 
-        new Reader(this.file).read((error: Error, content) => {
+        new Promise ((resolve, reject) => {
+            new Reader(this.file).read((error: Error, content) => {
 
-            if (error) throw error
-            content = content.split(/\r?\n/g).filter(x => x !== '').join('\n')
-            
-            const AST = Tabdown.parse(content)
-
-            this.readAST(AST.children)
-
-            let parent_type: String
-
-            this.output.push('module.exports = {')
-
-            for (const index in this.code) {
-                let line = this.code[index].trim()
-
-                if (line.endsWith('{')) {
-                    const tokens = [
-                        'scheme',
-                        'schema',
-                        'type',
-                        'group'
-                    ]
-                    for (const token of tokens) {
-                        if (line.startsWith(token)) {
-                            const name  = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0]
-                            line        = '"' + name.toLowerCase() + '": {'
-                            parent_type = token
-                        }
-                    }
-                }
-
-                if (line.startsWith('-')) {
-                    const line_formatted = line.slice(1, line.length).trim()
-
-                    if (line_formatted.includes('=>')) {
-                        const line_splitted  = line_formatted.split('=>'),
-                              property       = line_splitted[0].trim(),
-                              value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim()
-                              line           = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1)
-                        switch (property) {
-
-                            case 'regex': {
-                                line = line.replace(value, '/' + value + '/')
-                                break
+                if (error) throw error
+                content = content.split(/\r?\n/g).filter(x => x !== '').join('\n')
+                
+                const AST = Tabdown.parse(content)
+    
+                this.readAST(AST.children)
+    
+                let parent_type: String
+    
+                this.output.push('module.exports = {')
+    
+                for (const index in this.code) {
+                    let line = this.code[index].trim()
+    
+                    if (line.endsWith('{')) {
+                        const tokens = [
+                            'scheme',
+                            'schema',
+                            'type',
+                            'group'
+                        ]
+                        for (const token of tokens) {
+                            if (line.startsWith(token)) {
+                                const name  = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0]
+                                line        = '"' + name.toLowerCase() + '": {'
+                                parent_type = token
                             }
-
                         }
-                              
-                    } else {
-                        const property       = line_formatted.trim()
                     }
-                    if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
-                }
-
-                if (line.startsWith('}')) {
-                    if (this.code[parseInt(index) + 1]) {
+    
+                    if (line.startsWith('-')) {
+                        const line_formatted = line.slice(1, line.length).trim()
+    
+                        if (line_formatted.includes('=>')) {
+                            const line_splitted  = line_formatted.split('=>'),
+                                  property       = line_splitted[0].trim(),
+                                  value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim()
+                                  line           = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1)
+                            switch (property) {
+    
+                                case 'regex': {
+                                    line = line.replace(value, '/' + value + '/')
+                                    break
+                                }
+    
+                            }
+                                  
+                        } else {
+                            const property       = line_formatted.trim()
+                        }
                         if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
                     }
+    
+                    if (line.startsWith('}')) {
+                        if (this.code[parseInt(index) + 1]) {
+                            if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
+                        }
+                    }
+                    this.output.push(line)
                 }
-                this.output.push(line)
-            }
-            this.output.push('}')
-            console.log(this.output.join('\n'))
-        })
+                this.output.push('}')
+                
+                resolve(this.output)
+            })
+        }).then(code => {
+            callback(code)
+        }) 
 
     }
 

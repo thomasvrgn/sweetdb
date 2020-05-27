@@ -7,4 +7,4 @@
 
 import Parser from './src/parser'
 
-new Parser('tests/type').parse()
+new Parser('tests/type').parse(code => console.log(code))
