@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/NessMC/sweetdb#readme",
   "dependencies": {
-    "@types/node": "^14.0.5"
+    "@types/node": "^14.0.5",
+    "tabdown-kfatehi": "^0.2.0"
   }
 }

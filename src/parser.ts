@@ -5,24 +5,49 @@
  *
 /*/
 
-import Reader from './reader'
+import Reader       from './reader'
+import * as Tabdown from 'tabdown-kfatehi'
 
 export default class Parser {
 
-    constructor (public file) {
+    public code: Array<String> = []
 
-        this.file = file
+    constructor (public file) {}
 
+    public readAST (tree) {
+        
+        for (const i of tree) {
+            
+            if (i.value.trim().endsWith(':')) {
+                if (i.children.length > 0) {
+                    this.code.push(i.value.slice(0, i.value.length - 1) + ' {')
+                    this.readAST(i.children)
+                    this.code.push('}')
+                } else {
+                    this.code.push(i.value)
+                }
+            } else {
+                this.code.push(i.value)
+            }
+            
+        }
     }
 
     public parse () {
 
-        new Reader(this.file).read((error, content) => {
+        new Reader(this.file).read((error: Error, content) => {
+
             if (error) throw error
-            console.log(content)
+            content = content.split(/\r?\n/g).join('\n')
+            
+            const AST = Tabdown.parse(content)
+
+            this.readAST(AST.children)
+
+            console.log(this.code.join('\n'))
+
         })
 
     }
-
 
 }
