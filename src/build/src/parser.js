@@ -39,6 +39,7 @@ var Parser = /** @class */ (function () {
             var AST = Tabdown.parse(content);
             _this.readAST(AST.children);
             var parent_type;
+            console.log('module.exports = {');
             for (var index in _this.code) {
                 var line = _this.code[index].trim();
                 if (line.endsWith('{')) {
@@ -58,6 +59,20 @@ var Parser = /** @class */ (function () {
                     }
                 }
                 if (line.startsWith('-')) {
+                    var line_formatted = line.slice(1, line.length).trim();
+                    if (line_formatted.includes('=>')) {
+                        var line_splitted = line_formatted.split('=>'), property = line_splitted[0].trim(), value = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim();
+                        line = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1);
+                        switch (property) {
+                            case 'regex': {
+                                line = line.replace(value, '/' + value + '/');
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        var property = line_formatted.trim();
+                    }
                     if (_this.code[parseInt(index) + 1].trim() !== '}')
                         line += ',';
                 }
@@ -69,6 +84,7 @@ var Parser = /** @class */ (function () {
                 }
                 console.log(line);
             }
+            console.log('}');
         });
     };
     return Parser;

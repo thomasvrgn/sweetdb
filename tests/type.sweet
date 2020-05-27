@@ -3,8 +3,4 @@ scheme Types:
     type String:
 
         - length => 5
-        - regex      => "(.*?)"
-
-    type Number:
-
-        - test => "oucou
+        - regex  => "(.*?)"

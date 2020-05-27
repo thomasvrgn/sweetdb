@@ -50,6 +50,8 @@ export default class Parser {
 
             let parent_type: String
 
+            console.log('module.exports = {')
+
             for (const index in this.code) {
                 let line = this.code[index].trim()
 
@@ -70,6 +72,25 @@ export default class Parser {
                 }
 
                 if (line.startsWith('-')) {
+                    const line_formatted = line.slice(1, line.length).trim()
+
+                    if (line_formatted.includes('=>')) {
+                        const line_splitted  = line_formatted.split('=>'),
+                              property       = line_splitted[0].trim(),
+                              value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim()
+                              line           = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1)
+                        switch (property) {
+
+                            case 'regex': {
+                                line = line.replace(value, '/' + value + '/')
+                                break
+                            }
+
+                        }
+                              
+                    } else {
+                        const property       = line_formatted.trim()
+                    }
                     if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
                 }
 
@@ -78,9 +99,9 @@ export default class Parser {
                         if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
                     }
                 }
-
                 console.log(line)
             }
+            console.log('}')
 
         })
 
