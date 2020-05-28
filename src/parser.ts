@@ -29,11 +29,13 @@ export default class Parser {
                         this.readAST(i.children)
                         this.code.push('}')
                     } else {
-                        this.code.push(i.value)
+                        console.log('EMPTY CHILDREN')
                     }
                 } else {
-                    this.code.push(i.value + ' {')
-                    this.code.push('}')
+                    console.log('Null Error at line', (this.code.length + 1).toString())
+                    console.log('Children cannot be empty.')
+                    console.log(i.value)
+                    console.log(new Array(i.value.length).fill('^').join(''))
                 }
             } else {
                 this.code.push(i.value)
