@@ -92,8 +92,16 @@ var Parser = /** @class */ (function () {
                         else {
                             var property = line_formatted.trim();
                         }
-                        if (_this.code[parseInt(index) + 1].trim() !== '}')
-                            line += ',';
+                        if (_this.code[parseInt(index) + 1].trim() !== '}') {
+                            if (line.includes('#')) {
+                                var comment = line.slice(line.indexOf('#'));
+                                var first = line.slice(0, line.indexOf('#')).trim();
+                                line = first.trim() + ',' + comment;
+                            }
+                            else {
+                                line += ',';
+                            }
+                        }
                     }
                     if (line.includes('#'))
                         line = line.replace('#', '//');

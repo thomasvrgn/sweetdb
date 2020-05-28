@@ -105,7 +105,15 @@ export default class Parser {
                         } else {
                             const property       = line_formatted.trim()
                         }
-                        if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
+                        if (this.code[parseInt(index) + 1].trim() !== '}') {
+                            if (line.includes('#')) {
+                                const comment = line.slice(line.indexOf('#'))
+                                const first   = line.slice(0, line.indexOf('#')).trim()
+                                line = first.trim() + ',' + comment
+                            } else {
+                                line += ','
+                            }
+                        }
                     }
                     
                     if (line.includes('#'))  line = line.replace('#', '//')
