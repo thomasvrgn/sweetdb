@@ -7,8 +7,6 @@
 
 import Reader       from './reader'
 import * as Tabdown from 'tabdown-kfatehi'
-import * as FS      from 'fs'
-import * as PATH    from 'path'
 
 export default class Parser {
 
