@@ -86,7 +86,7 @@ var Parser = /** @class */ (function () {
                     if (line.startsWith('-')) {
                         var line_formatted = line.slice(1, line.length).trim();
                         if (line_formatted.includes('=>')) {
-                            var line_splitted = line_formatted.split('=>'), property = line_splitted[0].trim(), value = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim().split('#')[0].trim();
+                            var line_splitted = line_formatted.split('=>'), property = line_splitted[0].trim(), value = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim().split('//')[0].split('/*')[0].trim();
                             line = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1);
                             switch (property) {
                                 case 'regex': {

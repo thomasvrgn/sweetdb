@@ -95,7 +95,7 @@ export default class Parser {
                         if (line_formatted.includes('=>')) {
                             const line_splitted  = line_formatted.split('=>'),
                                   property       = line_splitted[0].trim(),
-                                  value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim().split('#')[0].trim()
+                                  value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim().split('//')[0].split('/*')[0].trim()
                                   line           = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1)
                             switch (property) {
     
