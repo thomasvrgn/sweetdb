@@ -23,12 +23,17 @@ export default class Parser {
         for (const i of tree) {
             
             if (i.value.trim().endsWith(':')) {
-                if (i.children.length > 0) {
-                    this.code.push(i.value + ' {')
-                    this.readAST(i.children)
-                    this.code.push('}')
+                if (i.children) {
+                    if (i.children.length > 0) {
+                        this.code.push(i.value + ' {')
+                        this.readAST(i.children)
+                        this.code.push('}')
+                    } else {
+                        this.code.push(i.value)
+                    }
                 } else {
-                    this.code.push(i.value)
+                    this.code.push(i.value + ' {')
+                    this.code.push('}')
                 }
             } else {
                 this.code.push(i.value)
@@ -55,6 +60,7 @@ export default class Parser {
                     let line = this.code[index].trim()
     
                     if (line.endsWith('{')) {
+                        parent_type = undefined
                         const tokens = [
                             'scheme',
                             'schema',
@@ -63,10 +69,18 @@ export default class Parser {
                         ]
                         for (const token of tokens) {
                             if (line.startsWith(token)) {
-                                const name  = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0].replace(/\s/g, '_')
+                                const name  = token + '::' + line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0].replace(/\s/g, '_')
                                 line        = '"' + name.toLowerCase() + '": {'
                                 parent_type = token
                             }
+                        }
+                        if (!parent_type) {
+                            console.log('Syntax error at line', index)
+                            console.log('Unexpected parent element:', line.split(' ')[0])
+                            console.log(line.split('{').join('').trim())
+                            const error: Array<String|Array<String>> = new Array(line.split('{').join('').trim().length).fill(' ')
+                            error.splice(line.indexOf(line.split(' ')[0]), line.split(' ')[0].length, ['^', '^', '^', '^'])
+                            console.log(error.flat().join(''))
                         }
                     }
                     
