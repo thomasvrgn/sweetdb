@@ -5,4 +5,5 @@
  *
 /*/
 import Parser from './src/parser';
-new Parser('tests/type').parse(function (code) { return console.log(code); });
+import Beautify from 'js-beautify';
+new Parser('tests/type').parse(function (code) { return console.log(Beautify(code.join('\n'))); });
