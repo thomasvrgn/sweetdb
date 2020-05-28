@@ -107,12 +107,17 @@ export default class Parser {
                         }
                         if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
                     }
-    
+                    
+                    if (line.includes('#'))  line = line.replace('#', '//')
+                    if (line.includes('<-')) line = line.replace('<-', '/*')
+                    if (line.includes('->')) line = line.replace('->', '*/')
+
                     if (line.startsWith('}')) {
                         if (this.code[parseInt(index) + 1]) {
                             if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
                         }
                     }
+
                     this.output.push(line)
                 }
                 this.output.push('}')

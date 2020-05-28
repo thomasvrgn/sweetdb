@@ -95,6 +95,12 @@ var Parser = /** @class */ (function () {
                         if (_this.code[parseInt(index) + 1].trim() !== '}')
                             line += ',';
                     }
+                    if (line.includes('#'))
+                        line = line.replace('#', '//');
+                    if (line.includes('<-'))
+                        line = line.replace('<-', '/*');
+                    if (line.includes('->'))
+                        line = line.replace('->', '*/');
                     if (line.startsWith('}')) {
                         if (_this.code[parseInt(index) + 1]) {
                             if (_this.code[parseInt(index) + 1].trim() !== '}')

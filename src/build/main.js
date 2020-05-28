@@ -6,4 +6,4 @@
 /*/
 import Parser from './src/parser';
 import Beautify from 'js-beautify';
-new Parser('tests/type').parse(function (code) { return console.log(Beautify(code.join('\n'))); });
+new Parser('tests/db').parse(function (code) { return console.log(Beautify(code.join('\n'))); });

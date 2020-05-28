@@ -8,3 +8,13 @@ scheme Users:
         - test
 
     # This is a comment
+
+    <-
+
+    Hello
+    This
+    is
+    a
+    comment
+
+    ->
