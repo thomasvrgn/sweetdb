@@ -4,3 +4,7 @@ scheme Types:
 
         - length => 5
         - regex  => "(.*?)"
+
+    type Number:
+        - length => 15
+        - regex  => \d+
