@@ -1,5 +1,9 @@
 scheme Users:
 
+    type String:
+
+        - length => 255 
+        - regex  => "(.*?)"
     group Informations:
 
         - name     => String

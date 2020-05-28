@@ -86,12 +86,16 @@ export default class Parser {
                         }
                     }
                     
+                    if (line.includes('#'))  line = line.replace('#', '//')
+                    if (line.includes('<-')) line = line.replace('<-', '/*')
+                    if (line.includes('->')) line = line.replace('->', '*/')
+                    
                     if (line.startsWith('-')) {
                         const line_formatted = line.slice(1, line.length).trim()
                         if (line_formatted.includes('=>')) {
                             const line_splitted  = line_formatted.split('=>'),
                                   property       = line_splitted[0].trim(),
-                                  value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim()
+                                  value: any     = Number(line_splitted[1].trim()) ? parseInt(line_splitted[1].trim()) : line_splitted[1].trim().split('#')[0].trim()
                                   line           = line.replace('=>', ':').replace(property, '"' + property + '"').slice(1)
                             switch (property) {
     
@@ -99,11 +103,19 @@ export default class Parser {
                                     line = line.replace(value, '/' + value + '/')
                                     break
                                 }
+                                
+                                default: {
+
+                                    line = line.replace(value, '"' + value + '"')
+
+                                    break
+                                }
     
                             }
                                   
                         } else {
                             const property       = line_formatted.trim()
+                            line = '"' +  property + '": "String"'
                         }
                         if (this.code[parseInt(index) + 1].trim() !== '}') {
                             if (line.includes('#')) {
@@ -115,10 +127,6 @@ export default class Parser {
                             }
                         }
                     }
-                    
-                    if (line.includes('#'))  line = line.replace('#', '//')
-                    if (line.includes('<-')) line = line.replace('<-', '/*')
-                    if (line.includes('->')) line = line.replace('->', '*/')
 
                     if (line.startsWith('}')) {
                         if (this.code[parseInt(index) + 1]) {
