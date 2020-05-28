@@ -1,10 +1,10 @@
-scheme Types:
+scheme User informations:
 
-    type String:
+    type Email: 
+        - length => 16
+        - regex  => \w+@\w+
 
-        - length => 5
-        - regex  => "(.*?)"
+    group Users:
 
-    type Number:
-        - length => 15
-        - regex  => \d+
+        - name   => String
+        - Mail   => Email

@@ -7,12 +7,13 @@
 
 import Reader       from './reader'
 import * as Tabdown from 'tabdown-kfatehi'
+import { type } from 'os'
 
 export default class Parser {
 
     public code   : Array<String>  = []
-    public types  : Object         = {}
     public output : Array<String>  = []
+    public types  : Array<Object>  = []
 
     constructor (public file) {}
 
@@ -49,9 +50,7 @@ export default class Parser {
                 this.readAST(AST.children)
     
                 let parent_type: String
-    
                 this.output.push('module.exports = {')
-    
                 for (const index in this.code) {
                     let line = this.code[index].trim()
     
@@ -64,16 +63,15 @@ export default class Parser {
                         ]
                         for (const token of tokens) {
                             if (line.startsWith(token)) {
-                                const name  = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0]
+                                const name  = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0].replace(/\s/g, '_')
                                 line        = '"' + name.toLowerCase() + '": {'
                                 parent_type = token
                             }
                         }
                     }
-    
+                    
                     if (line.startsWith('-')) {
                         const line_formatted = line.slice(1, line.length).trim()
-    
                         if (line_formatted.includes('=>')) {
                             const line_splitted  = line_formatted.split('=>'),
                                   property       = line_splitted[0].trim(),

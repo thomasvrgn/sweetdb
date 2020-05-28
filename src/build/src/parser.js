@@ -10,8 +10,8 @@ var Parser = /** @class */ (function () {
     function Parser(file) {
         this.file = file;
         this.code = [];
-        this.types = {};
         this.output = [];
+        this.types = [];
     }
     Parser.prototype.readAST = function (tree) {
         for (var _i = 0, tree_1 = tree; _i < tree_1.length; _i++) {
@@ -54,7 +54,7 @@ var Parser = /** @class */ (function () {
                         for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
                             var token = tokens_1[_i];
                             if (line.startsWith(token)) {
-                                var name_1 = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0];
+                                var name_1 = line.substr(token.length, line.length).trim().match(/.*?(?=:)/)[0].replace(/\s/g, '_');
                                 line = '"' + name_1.toLowerCase() + '": {';
                                 parent_type = token;
                             }
