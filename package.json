@@ -25,6 +25,9 @@
   "dependencies": {
     "@types/node": "^14.0.5",
     "js-beautify": "^1.11.0",
-    "tabdown-kfatehi": "^0.2.0"
+    "minify": "^5.1.1",
+    "tabdown-kfatehi": "^0.2.0",
+    "terser": "^4.7.0",
+    "uglify-js": "^3.9.4"
   }
 }

@@ -104,9 +104,9 @@ var Parser = /** @class */ (function () {
                             line = '"' + property + '": "String"';
                         }
                         if (_this.code[parseInt(index) + 1].trim() !== '}') {
-                            if (line.includes('#')) {
-                                var comment = line.slice(line.indexOf('#'));
-                                var first = line.slice(0, line.indexOf('#')).trim();
+                            if (line.includes('//')) {
+                                var comment = line.slice(line.indexOf('//'));
+                                var first = line.slice(0, line.indexOf('//')).trim();
                                 line = first.trim() + ',' + comment;
                             }
                             else {
@@ -116,8 +116,9 @@ var Parser = /** @class */ (function () {
                     }
                     if (line.startsWith('}')) {
                         if (_this.code[parseInt(index) + 1]) {
-                            if (_this.code[parseInt(index) + 1].trim() !== '}')
+                            if (_this.code[parseInt(index) + 1].trim() !== '}' && !_this.code[parseInt(index) + 1].trim().startsWith('#') && !_this.code[parseInt(index) + 1].trim().startsWith('<-')) {
                                 line += ',';
+                            }
                         }
                     }
                     _this.output.push(line);

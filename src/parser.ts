@@ -118,9 +118,9 @@ export default class Parser {
                             line = '"' +  property + '": "String"'
                         }
                         if (this.code[parseInt(index) + 1].trim() !== '}') {
-                            if (line.includes('#')) {
-                                const comment = line.slice(line.indexOf('#'))
-                                const first   = line.slice(0, line.indexOf('#')).trim()
+                            if (line.includes('//')) {
+                                const comment = line.slice(line.indexOf('//'))
+                                const first   = line.slice(0, line.indexOf('//')).trim()
                                 line = first.trim() + ',' + comment
                             } else {
                                 line += ','
@@ -130,7 +130,9 @@ export default class Parser {
 
                     if (line.startsWith('}')) {
                         if (this.code[parseInt(index) + 1]) {
-                            if (this.code[parseInt(index) + 1].trim() !== '}') line += ','
+                            if (this.code[parseInt(index) + 1].trim() !== '}' && !this.code[parseInt(index) + 1].trim().startsWith('#') && !this.code[parseInt(index) + 1].trim().startsWith('<-')) {
+                                line += ','
+                            }
                         }
                     }
 
