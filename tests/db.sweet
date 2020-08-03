@@ -1,4 +1,7 @@
 database Palamazon {
+    template email {
+        - regex => (\w|\d)+@(\w|\d)+\.\w{2}
+    }
     table Users {
         field username {
             - type => string
@@ -15,7 +18,7 @@ database Palamazon {
         field email {
             - type => string
             - template => email
-            - required => false
+            - required => true
             - min length => 5
         }
     }

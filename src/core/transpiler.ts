@@ -24,7 +24,8 @@ export default class SweetDB {
     let context: Array<string> = [],
       current_field: string = '',
       current_table: string = '',
-      current_field_name: string = ''
+      current_field_name: string = '',
+      current_template_name: string = ''
     for (const index in this.content) {
       if (this.content.hasOwnProperty(index)) {
         let line: string = this.content[index],
@@ -73,6 +74,17 @@ export default class SweetDB {
                 context.push('FIELD')
                 break
               }
+              case 'TEMPLATE': {
+                const template_name = value
+                  .split(/template/i)
+                  .slice(-1)[0]
+                  .trim()
+                  .replace('{', '')
+                  .trim()
+                current_template_name = template_name
+                context.push('TEMPLATE')
+                break
+              }
               case 'PARAM': {
                 const item = value
                   .split(/-\s+/i)[1]
@@ -82,7 +94,13 @@ export default class SweetDB {
                   .split(/\s+/g)
                   .join('_')
                 const property_value = item[1]
-                current_field += `"${property}": "${property_value}",`
+                if (context.includes('FIELD')) {
+                  current_field += `"${property}": "${property_value}",`
+                } else if (context.includes('TEMPLATE')) {
+                  if (property === 'regex') {
+                    Database.create_template(current_template_name, new RegExp(property_value))
+                  }
+                }
                 break
               }
               case 'CLOJURE': {
