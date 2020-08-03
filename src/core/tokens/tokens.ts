@@ -1,9 +1,3 @@
-// Token interface
-export interface Token {
-  token : string
-  value : string
-}
-
 // Tokens list
 export default {
   DATABASE: /(db|database)/i,
