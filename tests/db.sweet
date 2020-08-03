@@ -1,30 +1,39 @@
-database Palamazon:
-    table Users:
-        field username:
+database Palamazon {
+    table Users {
+        field username {
             - type => string
             - required => true
             - max length => 16
             - min length => 8
-        field password:
+        }
+        field password {
             - type => string
             - required => true
             - max length => 32
             - min length => 8
-        field email:
+        }
+        field email {
             - type => string
             - template => email
             - required => false
             - min length => 5
-    table Posts:
-        field id:  
+        }
+    }
+    table Posts {
+        field id {  
             - type => number
             - required => true
-        field name:
+        }
+        field name {
             - type => string
             - required => true
             - min length => 8
             - max length => 512
-        field body:
+        }
+        field body {
             - type => string
             - required => true
             - min length => 8
+        }
+    }
+}

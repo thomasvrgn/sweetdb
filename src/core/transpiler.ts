@@ -34,6 +34,13 @@ export default class Transpiler {
 
             if (!token) throw new Error(value)
 
+            switch (token) {
+              case 'DATABASE': {
+                console.log(value)
+                break
+              }
+            }
+
           }
         }
 
