@@ -35,7 +35,12 @@ export default class Transpiler {
 
             switch (token) {
               case 'DATABASE': {
-                console.log(value)
+                const database_name = value
+                  .split(/(db|database)/)
+                  .slice(-1)[0]
+                  .trim()
+                  .replace('{', '')
+                  .trim()
                 break
               }
             }
