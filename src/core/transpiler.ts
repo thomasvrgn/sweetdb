@@ -12,13 +12,14 @@ export default class Transpiler {
 
     Tokenizer.addTokenSet(Tokens)
 
-    this.content = file_content.split(/\n/g).filter(x => x.trim().length > 0)
+    this.content = file_content.split(/\r?\n/g).filter(x => x.trim().length > 0)
 
   }
 
 
   public async transpile () {
 
+    console.log(this.content)
 
   }
 
