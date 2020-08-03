@@ -1,7 +1,6 @@
 import { Tokenizer } from './parser'
 import Tokens from './tokens/tokens'
 import { Token } from './scanner'
-import Tabdown from './tabdown'
 
 export default class Transpiler {
 
