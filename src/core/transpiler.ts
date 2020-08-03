@@ -76,6 +76,8 @@ export default class Transpiler {
                   .split(/=>/)
                   .map(x => x.trim())
                 const property = item[0]
+                  .split(/\s+/g)
+                  .join('_')
                 const property_value = item[1]
                 current_field += `"${property}": "${property_value}",`
                 break

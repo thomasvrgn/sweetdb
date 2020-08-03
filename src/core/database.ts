@@ -26,6 +26,7 @@ export default class Database {
 
   public static set_table_model (name: string, field: string, model: Object): void {
     this.models[name][field] = model[field]
+    console.log(model)
   }
 
   public static get (table: string, object: Object = {}): Array<Object> {
@@ -70,13 +71,13 @@ export default class Database {
     for (const model_item in this.models[name]) {
       const model = this.models[name][model_item]
 
-      if (!informations[model_item] && model.required) 
+      if (!informations[model_item] && model.required === 'true') 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} field is required!`)
 
       if (this.type(informations[model_item]) !== model.type) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} type must be ${model.type}, received ${this.type(informations[model_item])}.`)
 
-      if (model.length && (informations[model_item].length < model.length.min || informations[model_item].length > model.length.max)) 
+      if (model.length && (informations[model_item].length < parseInt(model.min_length) || informations[model_item].length > parseInt(model.max_length))) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} length must be between ${model.length.min} and ${model.length.max}, received ${informations[model_item].length}.`)
 
       if (this.templates[model.template] && !informations[model_item].match(this.templates[model.template])) 
