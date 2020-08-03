@@ -2,6 +2,8 @@ import { Tokenizer } from './parser'
 import Tokens from './tokens/tokens'
 import { Token } from './scanner'
 import Database from './database'
+import * as FS from 'fs'
+import * as path from 'path'
 
 export default class SweetDB {
 
@@ -15,8 +17,10 @@ export default class SweetDB {
   }
 
 
-  public load (file_content: string = '') {
-    this.content = file_content.split(/\r?\n/g).filter(x => x.trim().length > 0)
+  public load (file: string = '') {
+    this.content = FS.readFileSync(path.resolve(file), 'utf-8')
+      .split(/\r?\n/g)
+      .filter(x => x.trim().length > 0)
     let context: Array<string> = [],
       current_field: string = '',
       current_table: string = '',

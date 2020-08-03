@@ -1,7 +1,5 @@
 import Sweet from './core/transpiler'
-import * as FS from 'fs'
-import * as path from 'path'
-const db = new Sweet().load(FS.readFileSync(path.resolve(path.join('tests', 'db.sweet')), 'utf-8'))
+const db = new Sweet().load('tests/db.sweet')
 
 db.set('Users', {
   username: 'NessMC',
