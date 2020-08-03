@@ -3,7 +3,7 @@
       "target": "es5",
       "sourceMap": false,
       "outDir": "./src/build",
-      "module": "ES6",
+      "module": "CommonJS",
       "moduleResolution": "node",
       "lib": [
         "dom",
