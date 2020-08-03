@@ -17,7 +17,7 @@ export default class Transpiler {
   }
 
 
-  public async transpile () {
+  public transpile () {
     let context: Array<string> = [],
       current_field: string = '',
       current_table: string = '',
@@ -97,11 +97,11 @@ export default class Transpiler {
           }
         }
 
-        this.code.push(built.join(''))
-
       }
 
     }
+  
+    return Database
 
   }
 

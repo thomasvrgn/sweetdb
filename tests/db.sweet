@@ -4,7 +4,7 @@ database Palamazon {
             - type => string
             - required => true
             - max length => 16
-            - min length => 8
+            - min length => 4
         }
         field password {
             - type => string
