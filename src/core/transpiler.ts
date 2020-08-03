@@ -3,21 +3,20 @@ import Tokens from './tokens/tokens'
 import { Token } from './scanner'
 import Database from './database'
 
-export default class Transpiler {
+export default class SweetDB {
 
   private content: Array<string> = []
   private code: Array<string> = []
 
-  constructor (file_content: string = '') {
+  constructor () {
 
     Tokenizer.addTokenSet(Tokens)
-
-    this.content = file_content.split(/\r?\n/g).filter(x => x.trim().length > 0)
 
   }
 
 
-  public transpile () {
+  public load (file_content: string = '') {
+    this.content = file_content.split(/\r?\n/g).filter(x => x.trim().length > 0)
     let context: Array<string> = [],
       current_field: string = '',
       current_table: string = '',
