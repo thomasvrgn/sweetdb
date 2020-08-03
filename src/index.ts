@@ -7,6 +7,11 @@ db.set('Users', {
   email: 'contact@nessmc.fr'
 })
 
-console.log(db.get('Users', {
-  username: 'NessMC'
-}))
+db.set_table_model('Users', 'age', {
+  age: {
+    type: 'number',
+    required: true
+  }
+})
+
+console.log(db.get('Users'))

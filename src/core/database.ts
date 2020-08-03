@@ -26,6 +26,21 @@ export default class Database {
 
   public static set_table_model (name: string, field: string, model: Object): void {
     this.models[name][field] = model[field]
+    for (const item of this.database[name]) {
+      if (!item[field]) {
+        if (model[field].type === 'map') {
+          item[field] = new Map()
+        } else if (model[field].type === 'array') {
+          item[field] = []
+        } else if (model[field].type === 'string') {
+          item[field] = ''
+        } else if (model[field].type === 'number') {
+          item[field] = 0
+        } else if (item[field].type === 'boolean') {
+          item[field] = false
+        }
+      }
+    }
   }
 
   public static get (table: string, object: Object = {}): Array<Object> {
@@ -76,7 +91,7 @@ export default class Database {
       if (model.required === 'true' && this.type(informations[model_item]) !== model.type) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} type must be ${model.type}, received ${this.type(informations[model_item])}.`)
 
-      if (model.required === 'true' && model.length && (informations[model_item].length < parseInt(model.min_length) || informations[model_item].length > parseInt(model.max_length))) 
+      if (model.required === 'true' && model.length && (informations[model_item].length < parseInt(model.min_length.toString()) || informations[model_item].length > parseInt(model.max_length.toString()))) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} length must be between ${model.length.min} and ${model.length.max}, received ${informations[model_item].length}.`)
 
       if (model.required === 'true' && this.templates[model.template] && !informations[model_item].match(this.templates[model.template])) 
