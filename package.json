@@ -8,9 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
-    "start": "tsc --project tsconfig.json --watch",
-    "compile": "pkg .\\dist\\sweet.js --out-path .\\dist\\bin\\"
+    "build": "tsc --project tsconfig.json",
+    "build:watch": "tsc --project tsconfig.json --watch",
+    "start": "node dist/index.js",
+    "start:watch": "nodemon dist/index.js"
   },
   "repository": {
     "type": "git",
