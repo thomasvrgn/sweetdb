@@ -1,8 +1,9 @@
 export default class Database {
 
-  static database  = {}
-  static models    = {}
-  static templates = {}
+  static db_name: string = ''
+  static database: Object = {}
+  static models: Object = {}
+  static templates: Object = {}
 
   private static type (variable: any): string {
     if (typeof variable === 'object') {
@@ -16,11 +17,15 @@ export default class Database {
     }
   }
 
-  public static create_table (name: string, model: Object): void {
+  public static create_table (name: string, model: Object = {}): void {
     if (this.database[name]) throw new Error(`Table ${name} already exists!`)
     this.database[name] = []
     this.models[name] = model
     return
+  }
+
+  public static set_table_model (name: string, field: string, model: Object): void {
+    this.models[name][field] = model[field]
   }
 
   public static get (table: string, object: Object = {}): Array<Object> {
