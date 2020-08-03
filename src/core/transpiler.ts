@@ -19,7 +19,29 @@ export default class Transpiler {
 
   public async transpile () {
 
-    console.log(this.content)
+    for (const index in this.content) {
+      if (this.content.hasOwnProperty(index)) {
+        let line: string = this.content[index],
+          tokens: Array<Token> = Tokenizer.tokenize(line),
+          context: Array<string> = [],
+          built: any = []
+
+        for (const token_index in tokens) {
+          if (tokens.hasOwnProperty(token_index)) {
+            const item: Token = tokens[token_index],
+              value: string = item.value,
+              token: string = item.token
+
+            if (!token) throw new Error(value)
+
+          }
+        }
+
+        this.code.push(built.join(''))
+
+      }
+
+    }
 
   }
 

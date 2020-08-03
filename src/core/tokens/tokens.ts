@@ -1,7 +1,8 @@
 // Tokens list
 export default {
-  DATABASE: /(db|database)/i,
-  TABLE: /table/i,
-  FIELD: /field/i,
-  PARAM: /-(\s+)?(\w|\s)+=>.*/i
+  DATABASE: /(db|database)(\w|\s)+:/i,
+  TABLE: /table(\w|\s)+:/i,
+  FIELD: /field(\w|\s)+:/i,
+  PARAM: /-(\s+)?(\w|\s)+=>.*/i,
+  TABS: /^\s+/
 }
