@@ -52,7 +52,7 @@ You must then load this file in your Javascript code.
 
 ```js
 const sweet = require('sweetdb'),
-	  db = new sweet().load('path/to/file.sweet')
+		db = new sweet.Database('path/to/file.sweet')
 ```
 
 You can now interact with your database easily:
