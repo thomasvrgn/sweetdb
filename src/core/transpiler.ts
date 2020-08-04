@@ -5,22 +5,17 @@ import Database from './database'
 import * as FS from 'fs'
 import * as path from 'path'
 
-export default class SweetDB {
+export default class SweetDB extends Database {
 
   private content: Array<string> = []
-  private code: Array<string> = []
 
   constructor () {
-
+    super()
     Tokenizer.addTokenSet(Tokens)
-
-  }
-
-  public get database () {
-    return Database
   }
 
   public load (file: string = '') {
+    
     this.content = FS.readFileSync(path.resolve(file), 'utf-8')
       .split(/\r?\n/g)
       .filter(x => x.trim().length > 0)
@@ -51,7 +46,7 @@ export default class SweetDB {
                   .trim()
                   .replace('{', '')
                   .trim()
-                Database.create_database(database_name)
+                this.create_database(database_name)
                 break
               }
               case 'TABLE': {
@@ -61,7 +56,7 @@ export default class SweetDB {
                   .trim()
                   .replace('{', '')
                   .trim()
-                Database.create_table(table_name)
+                this.create_table(table_name)
                 current_table = table_name
                 break
               }
@@ -101,7 +96,7 @@ export default class SweetDB {
                   current_field += `"${property}": "${property_value}",`
                 } else if (context.includes('TEMPLATE')) {
                   if (property === 'regex') {
-                    Database.create_template(current_template_name, new RegExp(property_value))
+                    this.create_template(current_template_name, new RegExp(property_value))
                   }
                 }
                 break
@@ -111,7 +106,7 @@ export default class SweetDB {
                   context.pop()
                   current_field = current_field.slice(0, current_field.length - 1)
                   current_field += '}}'
-                  Database.create_field(current_table, current_field_name, JSON.parse(current_field))
+                  this.create_field(current_table, current_field_name, JSON.parse(current_field))
                   current_field = ''
                 }
                 break

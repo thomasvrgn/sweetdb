@@ -1,11 +1,11 @@
 export default class Database {
 
-  static db_name: string = ''
-  static databases: Object = {}
-  static models: Object = {}
-  static templates: Object = {}
+  private db_name: string = ''
+  private databases: Object = {}
+  private models: Object = {}
+  private templates: Object = {}
 
-  private static type (variable: any): string {
+  private type (variable: any): string {
     if (typeof variable === 'object') {
       if (variable instanceof Map) {
         return 'map'
@@ -17,12 +17,12 @@ export default class Database {
     }
   }
 
-  public static create_database (name: string) {
+  public create_database (name: string) {
     this.databases[name] = {}
     this.db_name = name
   }
 
-  public static create_table (name: string, model: Object = {}): void {
+  public create_table (name: string, model: Object = {}): void {
     let db_name = '',
       table_name = ''
     if (name.split(':').length === 2) {
@@ -39,7 +39,7 @@ export default class Database {
     return
   }
 
-  public static create_field (name: string, field: string, model: Object): void {
+  public create_field (name: string, field: string, model: Object): void {
     let db_name = '',
       table_name = ''
     if (name.split(':').length === 2) {
@@ -67,7 +67,7 @@ export default class Database {
     }
   }
 
-  public static get (name: string, object: Object = {}): Array<Object> {
+  public get (name: string, object: Object = {}): Array<Object> {
     const array = []
     let db_name = '',
       table_name = ''
@@ -88,7 +88,7 @@ export default class Database {
     return array
   }
 
-  public static remove (name: string, object: Object = {}): void {
+  public remove (name: string, object: Object = {}): void {
     let db_name = '',
       table_name = ''
     if (name.split(':').length === 2) {
@@ -103,12 +103,12 @@ export default class Database {
     return
   }
 
-  public static create_template (name: string, regex: RegExp): void {
+  public create_template (name: string, regex: RegExp): void {
     this.templates[name] = regex
     return
   }
 
-  public static update (name: string, object: Object = {}, values: Object = {}): void {
+  public update (name: string, object: Object = {}, values: Object = {}): void {
     let db_name = '',
       table_name = ''
     if (name.split(':').length === 2) {
@@ -131,7 +131,7 @@ export default class Database {
     return
   }
 
-  public static set (name: string, informations: Object = this.models[this.db_name][name]): void {
+  public set (name: string, informations: Object = this.models[this.db_name][name]): void {
     let db_name = '',
       table_name = ''
     if (name.split(':').length === 2) {
