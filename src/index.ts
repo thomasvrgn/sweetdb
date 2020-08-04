@@ -1,4 +1,4 @@
-import Sweet from './core/transpiler'
+import Sweet from './core/interpreter'
 const sweet = new Sweet()
 sweet.load('tests/db.sweet')
 sweet.load('tests/test.sweet')
