@@ -1,21 +1,18 @@
 import { Tokenizer } from './parser'
 import Tokens from './tokens/tokens'
 import { Token } from './scanner'
-import Database from './database'
+import Sweet from './database/database'
 import * as FS from 'fs'
 import * as path from 'path'
 
-export default class SweetDB extends Database {
+export default class SweetDB extends Sweet.Database {
 
   private content: Array<string> = []
 
-  constructor () {
+  constructor (file: string = '') {
     super()
     Tokenizer.addTokenSet(Tokens)
-  }
-
-  public load (file: string = '') {
-    
+        
     this.content = FS.readFileSync(path.resolve(file), 'utf-8')
       .split(/\r?\n/g)
       .filter(x => x.trim().length > 0)
@@ -46,7 +43,7 @@ export default class SweetDB extends Database {
                   .trim()
                   .replace('{', '')
                   .trim()
-                this.create_database(database_name)
+                new Sweet.Database(database_name)
                 break
               }
               case 'TABLE': {
@@ -56,7 +53,7 @@ export default class SweetDB extends Database {
                   .trim()
                   .replace('{', '')
                   .trim()
-                this.create_table(table_name)
+                new Sweet.Table(table_name)
                 current_table = table_name
                 break
               }
@@ -96,7 +93,7 @@ export default class SweetDB extends Database {
                   current_field += `"${property}": "${property_value}",`
                 } else if (context.includes('TEMPLATE')) {
                   if (property === 'regex') {
-                    this.create_template(current_template_name, new RegExp(property_value))
+                    new Sweet.Template(current_template_name, new RegExp(property_value))
                   }
                 }
                 break
@@ -106,7 +103,7 @@ export default class SweetDB extends Database {
                   context.pop()
                   current_field = current_field.slice(0, current_field.length - 1)
                   current_field += '}}'
-                  this.create_field(current_table, current_field_name, JSON.parse(current_field))
+                  new Sweet.Field(current_table, current_field_name, JSON.parse(current_field))
                   current_field = ''
                 }
                 break
@@ -119,7 +116,6 @@ export default class SweetDB extends Database {
       }
 
     }
-
   }
 
 }
