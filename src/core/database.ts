@@ -1,5 +1,3 @@
-import { table } from "console"
-
 export default class Database {
 
   static db_name: string = ''
@@ -41,7 +39,7 @@ export default class Database {
     return
   }
 
-  public static set_table_model (name: string, field: string, model: Object): void {
+  public static create_field (name: string, field: string, model: Object): void {
     let db_name = '',
       table_name = ''
     if (name.split(':').length === 2) {

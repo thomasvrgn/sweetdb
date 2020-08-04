@@ -7,7 +7,7 @@ db.set('Palamazon:Users', {
   email: 'contact@nessmc.fr'
 })
 
-db.set_table_model('Palamazon:Users', 'age', {
+db.create_field('Palamazon:Users', 'age', {
   age: {
     type: 'number',
     required: true

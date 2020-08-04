@@ -108,7 +108,7 @@ export default class SweetDB {
                   context.pop()
                   current_field = current_field.slice(0, current_field.length - 1)
                   current_field += '}}'
-                  Database.set_table_model(current_table, current_field_name, JSON.parse(current_field))
+                  Database.create_field(current_table, current_field_name, JSON.parse(current_field))
                   current_field = ''
                 }
                 break
