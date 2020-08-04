@@ -6,20 +6,20 @@ database Palamazon {
         field username {
             - type => string
             - required => true
-            - max length => 16
-            - min length => 4
+            - maximum length => 16
+            - minimum length => 4
         }
         field password {
             - type => string
             - required => true
-            - max length => 32
-            - min length => 8
+            - maximum length => 32
+            - minimum length => 8
         }
         field email {
             - type => string
             - template => email
             - required => true
-            - min length => 5
+            - minimum length => 5
         }
     }
     table Posts {
@@ -30,13 +30,13 @@ database Palamazon {
         field name {
             - type => string
             - required => true
-            - min length => 8
-            - max length => 512
+            - minimum length => 8
+            - maximum length => 512
         }
         field body {
             - type => string
             - required => true
-            - min length => 8
+            - minimum length => 8
         }
     }
 }

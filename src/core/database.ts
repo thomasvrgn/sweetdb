@@ -84,17 +84,16 @@ export default class Database {
     this.database[name].push({})
     for (const model_item in this.models[name]) {
       const model = this.models[name][model_item]
-
-      if (!informations[model_item] && model.required === 'true') 
+      if (!informations[model_item] && Boolean(model.required)) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} field is required!`)
 
-      if (model.required === 'true' && this.type(informations[model_item]) !== model.type) 
+      if (Boolean(model.required) && this.type(informations[model_item]) !== model.type) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} type must be ${model.type}, received ${this.type(informations[model_item])}.`)
 
-      if (model.required === 'true' && model.length && (informations[model_item].length < parseInt(model.min_length.toString()) || informations[model_item].length > parseInt(model.max_length.toString()))) 
+      if (Boolean(model.required) && model.maximum_length && model.minimum_length && (informations[model_item].length < Number(model.minimum_length)) || informations[model_item].length > Number(model.maximum_length))
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} length must be between ${model.length.min} and ${model.length.max}, received ${informations[model_item].length}.`)
 
-      if (model.required === 'true' && this.templates[model.template] && !informations[model_item].match(this.templates[model.template])) 
+      if (Boolean(model.required) && this.templates[model.template] && !informations[model_item].match(this.templates[model.template])) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} field does not match ${model.template} template.`)
 
       this.database[name].slice(-1)[0][model_item] = informations[model_item]
