@@ -1,7 +1,9 @@
+import { table } from "console"
+
 export default class Database {
 
   static db_name: string = ''
-  static database: Object = {}
+  static databases: Object = {}
   static models: Object = {}
   static templates: Object = {}
 
@@ -17,16 +19,40 @@ export default class Database {
     }
   }
 
+  public static create_database (name: string) {
+    this.databases[name] = {}
+    this.db_name = name
+  }
+
   public static create_table (name: string, model: Object = {}): void {
-    if (this.database[name]) throw new Error(`Table ${name} already exists!`)
-    this.database[name] = []
-    this.models[name] = model
+    let db_name = '',
+      table_name = ''
+    if (name.split(':').length === 2) {
+      db_name = name.split(':')[0]
+      table_name = name.split(':')[1]
+    } else {
+      db_name = this.db_name
+      table_name = name
+    }
+    if (this.databases[db_name][table_name]) throw new Error(`Table ${name} already exists!`)
+    this.databases[db_name][table_name] = []
+    if (!this.models[db_name]) this.models[db_name] = {}
+    this.models[db_name][table_name] = model
     return
   }
 
   public static set_table_model (name: string, field: string, model: Object): void {
-    this.models[name][field] = model[field]
-    for (const item of this.database[name]) {
+    let db_name = '',
+      table_name = ''
+    if (name.split(':').length === 2) {
+      db_name = name.split(':')[0]
+      table_name = name.split(':')[1]
+    } else {
+      db_name = this.db_name
+      table_name = name
+    }
+    this.models[db_name][table_name][field] = model[field]
+    for (const item of this.databases[db_name][table_name]) {
       if (!item[field]) {
         if (model[field].type === 'map') {
           item[field] = new Map()
@@ -43,9 +69,18 @@ export default class Database {
     }
   }
 
-  public static get (table: string, object: Object = {}): Array<Object> {
+  public static get (name: string, object: Object = {}): Array<Object> {
     const array = []
-    for (const table_item of this.database[table]) {
+    let db_name = '',
+      table_name = ''
+    if (name.split(':').length === 2) {
+      db_name = name.split(':')[0]
+      table_name = name.split(':')[1]
+    } else {
+      db_name = this.db_name
+      table_name = name
+    }
+    for (const table_item of this.databases[db_name][table_name]) {
       let verify = 0
       for (const item in object) {
         if (object[item] === table_item[item]) ++verify
@@ -55,9 +90,18 @@ export default class Database {
     return array
   }
 
-  public static remove (table: string, object: Object = {}): void {
-    const indexes = this.get(table, object).map(x => this.get(table).indexOf(x))
-    this.database[table] = this.database[table].filter((x, index) => !indexes.includes(index))
+  public static remove (name: string, object: Object = {}): void {
+    let db_name = '',
+      table_name = ''
+    if (name.split(':').length === 2) {
+      db_name = name.split(':')[0]
+      table_name = name.split(':')[1]
+    } else {
+      db_name = this.db_name
+      table_name = name
+    }
+    const indexes = this.get(db_name + ':' + table_name, object).map(x => this.get(db_name + ':' + table_name).indexOf(x))
+    this.databases[db_name][table_name] = this.databases[db_name][table_name].filter((x, index) => !indexes.includes(index))
     return
   }
 
@@ -66,9 +110,18 @@ export default class Database {
     return
   }
 
-  public static update (table: string, object: Object = {}, values: Object = {}): void {
-    const indexes = this.get(table, object).map(x => this.get(table).indexOf(x))
-    this.database[table].filter(function (x, index) {
+  public static update (name: string, object: Object = {}, values: Object = {}): void {
+    let db_name = '',
+      table_name = ''
+    if (name.split(':').length === 2) {
+      db_name = name.split(':')[0]
+      table_name = name.split(':')[1]
+    } else {
+      db_name = this.db_name
+      table_name = name
+    }
+    const indexes = this.get(db_name + ':' + table_name, object).map(x => this.get(db_name + ':' + table_name).indexOf(x))
+    this.databases[db_name][table_name].filter(function (x, index) {
       if (indexes.includes(index)) {
         for (const value in values) {
           if (x[value]) {
@@ -80,10 +133,19 @@ export default class Database {
     return
   }
 
-  public static set (name: string, informations: Object = this.models[name]): void {
-    this.database[name].push({})
-    for (const model_item in this.models[name]) {
-      const model = this.models[name][model_item]
+  public static set (name: string, informations: Object = this.models[this.db_name][name]): void {
+    let db_name = '',
+      table_name = ''
+    if (name.split(':').length === 2) {
+      db_name = name.split(':')[0]
+      table_name = name.split(':')[1]
+    } else {
+      db_name = this.db_name
+      table_name = name
+    }
+    this.databases[db_name][table_name].push({})
+    for (const model_item in this.models[db_name][table_name]) {
+      const model = this.models[db_name][table_name][model_item]
       if (!informations[model_item] && Boolean(model.required)) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} field is required!`)
 
@@ -96,7 +158,7 @@ export default class Database {
       if (Boolean(model.required) && this.templates[model.template] && !informations[model_item].match(this.templates[model.template])) 
         throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} field does not match ${model.template} template.`)
 
-      this.database[name].slice(-1)[0][model_item] = informations[model_item]
+      this.databases[db_name][table_name].slice(-1)[0][model_item] = informations[model_item]
     }
     return
   }

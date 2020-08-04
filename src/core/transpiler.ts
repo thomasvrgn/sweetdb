@@ -48,7 +48,7 @@ export default class SweetDB {
                   .trim()
                   .replace('{', '')
                   .trim()
-                Database.db_name = database_name
+                Database.create_database(database_name)
                 break
               }
               case 'TABLE': {
