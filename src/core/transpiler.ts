@@ -16,6 +16,9 @@ export default class SweetDB {
 
   }
 
+  public get database () {
+    return Database
+  }
 
   public load (file: string = '') {
     this.content = FS.readFileSync(path.resolve(file), 'utf-8')
@@ -121,8 +124,6 @@ export default class SweetDB {
       }
 
     }
-  
-    return Database
 
   }
 

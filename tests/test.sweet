@@ -1,0 +1,42 @@
+database App {
+    template email {
+        - regex => (\w|\d)+@(\w|\d)+\.\w{2}
+    }
+    table Users {
+        field username {
+            - type => string
+            - required => true
+            - maximum length => 16
+            - minimum length => 4
+        }
+        field password {
+            - type => string
+            - required => true
+            - maximum length => 32
+            - minimum length => 8
+        }
+        field email {
+            - type => string
+            - template => email
+            - required => true
+            - minimum length => 5
+        }
+    }
+    table Posts {
+        field id {  
+            - type => number
+            - required => true
+        }
+        field name {
+            - type => string
+            - required => true
+            - minimum length => 8
+            - maximum length => 512
+        }
+        field body {
+            - type => string
+            - required => true
+            - minimum length => 8
+        }
+    }
+}

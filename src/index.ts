@@ -1,17 +1,19 @@
 import Sweet from './core/transpiler'
-const db = new Sweet().load('tests/db.sweet')
+const sweet = new Sweet()
+sweet.load('tests/db.sweet')
+sweet.load('tests/test.sweet')
 
-db.set('Palamazon:Users', {
+sweet.database.set('Palamazon:Users', {
   username: 'NessMC',
   password: '123456789',
   email: 'contact@nessmc.fr'
 })
 
-db.create_field('Palamazon:Users', 'age', {
+sweet.database.create_field('Palamazon:Users', 'age', {
   age: {
     type: 'number',
     required: true
   }
 })
 
-console.log(db.get('Palamazon:Users'))
+console.log(sweet.database.get('Palamazon:Users'))
