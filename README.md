@@ -4,6 +4,9 @@ SweetDB is a data manager and data store written in TypeScript. With Sweet you h
 ## Install it
 
 ```bash
+ # With NPM
+ $ npm i sweetdb
+
  # Cloning repository
  $ git clone https://github.com/NessMC/sweetdb
  $ cd sweetdb
