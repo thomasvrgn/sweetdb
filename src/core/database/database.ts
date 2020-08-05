@@ -1,3 +1,7 @@
+import * as FS from 'fs'
+import * as Path from 'path'
+import { cpuUsage } from 'process'
+
 const Sweet = {
   db_name: '',
   databases: {},
@@ -158,13 +162,50 @@ const Sweet = {
       Sweet.models[db_name][table_name] = model
     }
   },
-  Template: class  {
+  Template: class {
   
     constructor (name: string, regex: RegExp) {
       
       Sweet.templates[name] = regex
     }
   
+  },
+  Save: class {
+
+    constructor () { }
+
+    public save () {
+      return new Promise (function (resolve, reject) {
+        FS.exists(Path.resolve(Path.join(__dirname, 'temp')), function (exists) {
+          if (!exists) FS.mkdirSync(Path.resolve(Path.join(__dirname, 'temp')))
+          FS.writeFile(Path.resolve(Path.join(__dirname, 'temp', Date.now().toString() + '.json')), JSON.stringify(Sweet.databases), function (error) {
+            if (error) reject(error)
+            resolve()
+          })
+        })
+      })
+    }
+
+    public latest () {
+      return new Promise (function (resolve, reject) {
+        const path = Path.resolve(Path.join(__dirname, 'temp'))
+        FS.exists(path, function (exists) {
+          if (!exists) reject(`Temp folder not found.`)
+          FS.readdir(path, function (error, content) {
+            if (error) reject(error)
+            const latestFile = content.reduce(function (last, current) {
+
+              const currentFileDate = new Date(FS.statSync(Path.join(path, current)).mtime)
+              const lastFileDate = new Date(FS.statSync(Path.join(path, last)).mtime)
+
+              return (currentFileDate.getTime() > lastFileDate.getTime()) ? current : last
+            })
+            console.log(latestFile)
+          })
+        })
+      })
+    }
+
   }
 }
 
