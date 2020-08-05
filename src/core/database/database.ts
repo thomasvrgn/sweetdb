@@ -1,6 +1,6 @@
 import * as FS from 'fs'
 import * as Path from 'path'
-import { table } from 'console'
+import * as child from 'child_process'
 
 const Sweet = {
   db_name: '',
@@ -194,9 +194,11 @@ const Sweet = {
     constructor () { }
 
     public latest () {
-      const path: string = Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp'))
+      const path: string = Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp'))
       if (!FS.existsSync(path)) {
         FS.mkdirSync(path)
+        console.log(path)
+        child.execSync(`attrib ${path} +s +r +h`)
         return undefined
       }
       const content = FS.readdirSync(path)
@@ -214,7 +216,7 @@ const Sweet = {
     public load () {
       const latest = this.latest()
       if (!latest) return undefined
-      const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp'))
+      const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp'))
       const tmp_content = require(Path.join(path, latest))
       const content = {}
       for (const item in tmp_content) {
@@ -228,8 +230,10 @@ const Sweet = {
     }
 
     public save () {
-      const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp'))
-      if (!FS.existsSync(path)) FS.mkdirSync(Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp')))
+      const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp'))
+      if (!FS.existsSync(path)) { 
+        FS.mkdirSync(Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp')))
+      }
       const latestFile = (new Sweet.Save()).latest()
       if (latestFile !== undefined) {
         const latestFileContent = FS.readFileSync(Path.join(path, latestFile), 'utf-8')
@@ -244,7 +248,8 @@ const Sweet = {
           content[item] = Sweet.databases[item]
         }
       }
-      FS.writeFileSync(Path.join(path, Date.now().toString() + '.json'), JSON.stringify(content))
+      const name = Path.join(path, Date.now().toString()) + '.json'
+      FS.writeFileSync(name, JSON.stringify(content))
     }
 
   }
