@@ -2,7 +2,7 @@
   "name": "sweetdb",
   "version": "0.0.1",
   "description": "💾 Simple data storage.",
-  "main": "main.js",
+  "main": "dist/sweet.js",
   "directories": {
     "test": "tests"
   },
@@ -23,13 +23,8 @@
     "url": "https://github.com/NessMC/sweetdb/issues"
   },
   "homepage": "https://github.com/NessMC/sweetdb#readme",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^14.0.5",
-    "fs-extra": "^9.0.1",
-    "js-beautify": "^1.11.0",
-    "minify": "^5.1.1",
-    "tabdown-kfatehi": "^0.2.0",
-    "terser": "^4.7.0",
-    "uglify-js": "^3.9.4"
+    "fs-extra": "^9.0.1"
   }
 }
