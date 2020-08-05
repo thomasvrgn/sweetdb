@@ -1,18 +1,16 @@
 import Sweet from './core/sweet'
 
 const db = new Sweet.Database('tests/db.sweet')
-db.set('Palamazon:Users', {
-  username: 'NessMC',
-  password: '123456789',
-  email: 'contact@nessmc.fr'
+
+console.log(db.get('Palamazon:Users'))
+
+db.set('Users', {
+  username: 'iTrooz_',
+  password: 'bruhtestestestsetqs',
+  email: 'contact@itrooz.fr',
+  age: 72
 })
 
-new Sweet.Field('Palamazon:Users', 'age', {
-  age: {
-    type: 'number',
-    required: true
-  }
-})
-
-console.log(db.get('Palamazon:Users'));
-
+console.log(db.get('Users', {
+  username: 'iTrooz_'
+}))

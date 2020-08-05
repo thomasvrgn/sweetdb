@@ -7,9 +7,7 @@ export default {
   Table: Database.Table,
   Template: Database.Template,
   Save: Database.Save
-};
-
-// (new Database.Save).load()
+}
 
 process.on('beforeExit', async function () {
   await (new Database.Save()).save()
