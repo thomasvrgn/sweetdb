@@ -8,7 +8,7 @@ import * as path from 'path'
 export default class SweetDB extends Sweet.Database {
 
   private content: Array<string> = []
-
+  
   constructor (file: string) {
     super()
     super.load()
@@ -46,6 +46,7 @@ export default class SweetDB extends Sweet.Database {
                   .trim()
                 new Sweet.Database(database_name)
                 current_database = database_name
+                Sweet.db_name = current_database
                 break
               }
               case 'TABLE': {
