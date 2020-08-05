@@ -20,7 +20,7 @@ const Sweet = {
       }
     }
   
-    constructor (name: string = Sweet.db_name) { 
+    constructor (name: string = Sweet.db_name) {
       if (!Sweet.databases[name]) Sweet.databases[name] = {}
     }
     
@@ -194,7 +194,7 @@ const Sweet = {
     constructor () { }
 
     public latest () {
-      const path: string = Path.resolve(Path.join(__dirname, 'temp'))
+      const path: string = Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp'))
       if (!FS.existsSync(path)) {
         FS.mkdirSync(path)
         return undefined
@@ -213,8 +213,8 @@ const Sweet = {
 
     public load () {
       const latest = this.latest()
-      if (!latest) return
-      const path = Path.resolve(Path.join(__dirname, 'temp'))
+      if (!latest) return undefined
+      const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp'))
       const tmp_content = require(Path.join(path, latest))
       const content = {}
       for (const item in tmp_content) {
@@ -228,8 +228,8 @@ const Sweet = {
     }
 
     public save () {
-      const path = Path.resolve(Path.join(__dirname, 'temp'))
-      if (!FS.existsSync(path))FS.mkdirSync(Path.resolve(Path.join(__dirname, 'temp')))
+      const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp'))
+      if (!FS.existsSync(path)) FS.mkdirSync(Path.resolve(Path.join(Path.dirname(require.main.filename), '.temp')))
       const latestFile = (new Sweet.Save()).latest()
       if (latestFile !== undefined) {
         const latestFileContent = FS.readFileSync(Path.join(path, latestFile), 'utf-8')
@@ -238,7 +238,13 @@ const Sweet = {
           return
         }
       }
-      FS.writeFileSync(Path.join(path, Date.now().toString() + '.json'), JSON.stringify(Sweet.databases))
+      const content = {}
+      for (const item in Sweet.databases) {
+        if (item.length > 0) {
+          content[item] = Sweet.databases[item]
+        }
+      }
+      FS.writeFileSync(Path.join(path, Date.now().toString() + '.json'), JSON.stringify(content))
     }
 
   }
