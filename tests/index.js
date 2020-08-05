@@ -15,5 +15,3 @@ db2.set('Users', {
   password: '123456789',
   email: 'contact@nessmc.fr'
 })
-
-console.log(db2.get('Palamazon:Users'))

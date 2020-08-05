@@ -240,7 +240,7 @@ const Sweet = {
       const latest = this.latest()
       if (!latest) return undefined
       const path = Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp'))
-      const tmp_content = require(Path.join(path, latest))
+      const tmp_content = JSON.parse(FS.readFileSync(Path.join(path, latest), 'utf-8'))
       const content = {}
       for (const item in tmp_content) {
         if (item.length > 0) {
@@ -276,7 +276,7 @@ const Sweet = {
           FS.unlinkSync(Path.join(path, file))
         }
       }
-      const name = Path.join(path, Date.now().toString()) + '.json'
+      const name = Path.join(path, Date.now().toString())
       FS.writeFileSync(name, JSON.stringify(content))
       
     }
