@@ -7,3 +7,13 @@ db.set('Users', {
   password: '123456789',
   email: 'contact@nessmc.fr'
 })
+
+const db2 = new Sweet.Database('test.sweet')
+
+db2.set('Users', {
+  username: 'test',
+  password: '123456789',
+  email: 'contact@nessmc.fr'
+})
+
+console.log(db2.get('Palamazon:Users'))

@@ -197,7 +197,6 @@ const Sweet = {
       const path: string = Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp'))
       if (!FS.existsSync(path)) {
         FS.mkdirSync(path)
-        console.log(path)
         child.execSync(`attrib ${path} +s +r +h`)
         return undefined
       }
@@ -211,6 +210,30 @@ const Sweet = {
         return (currentFileDate.getTime() > lastFileDate.getTime()) ? current : last
       })
       return latestFile
+    }
+
+    public sort () {
+      const path: string = Path.resolve(Path.join(Path.dirname(require.main.filename), '.tmp'))
+      if (!FS.existsSync(path)) {
+        FS.mkdirSync(path)
+        child.execSync(`attrib ${path} +s +r +h`)
+        return undefined
+      }
+      let content = FS.readdirSync(path)
+      content = content
+        .map(function (fileName) {
+          return {
+            name: fileName,
+            time: FS.statSync(path + '/' + fileName).mtime.getTime()
+          }
+        })
+        .sort(function (a, b) {
+          return a.time - b.time
+        })
+        .map(function (v) {
+          return v.name
+        })
+      return content
     }
 
     public load () {
@@ -248,8 +271,14 @@ const Sweet = {
           content[item] = Sweet.databases[item]
         }
       }
+      if (this.sort().length > 10) {
+        for (const file of this.sort()) {
+          FS.unlinkSync(Path.join(path, file))
+        }
+      }
       const name = Path.join(path, Date.now().toString()) + '.json'
       FS.writeFileSync(name, JSON.stringify(content))
+      
     }
 
   }
