@@ -11,6 +11,3 @@ db.set('Users', {
   age: 72
 })
 
-console.log(db.get('Users', {
-  username: 'iTrooz_'
-}))

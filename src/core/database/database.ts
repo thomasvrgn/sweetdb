@@ -43,6 +43,7 @@ const Sweet = {
         db_name = Sweet.db_name
         table_name = name
       }
+      if (!Sweet.models[db_name] || !Sweet.models[db_name][table_name]) return []
       for (const table_item of Sweet.databases[db_name][table_name]) {
         let verify = 0
         for (const item in object) {
@@ -200,6 +201,7 @@ const Sweet = {
 
     public load () {
       const latest = this.latest()
+      if (!latest) return
       const path = Path.resolve(Path.join(__dirname, 'temp'))
       const tmp_content = require(Path.join(path, latest))
       const content = {}

@@ -43,7 +43,6 @@ export default class SweetDB extends Sweet.Database {
                     .trim()
                     .replace('{', '')
                     .trim()
-                  console.log(database_name)
                   new Sweet.Database(database_name)
                   break
                 }
