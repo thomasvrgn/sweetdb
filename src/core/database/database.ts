@@ -1,5 +1,6 @@
 import * as FS from 'fs'
 import * as Path from 'path'
+import { table } from 'console'
 
 const Sweet = {
   db_name: '',
@@ -105,6 +106,13 @@ const Sweet = {
       Sweet.databases[db_name][table_name].push({})
       for (const model_item in Sweet.models[db_name][table_name]) {
         const model = Sweet.models[db_name][table_name][model_item]
+        if (model_item === 'id') {
+          if (!Sweet.databases[db_name][table_name].slice(-2)[0] || !Sweet.databases[db_name][table_name].slice(-2)[0].id) 
+            Sweet.databases[db_name][table_name].slice(-1)[0].id = 1
+          else
+            Sweet.databases[db_name][table_name].slice(-1)[0].id = Sweet.databases[db_name][table_name].slice(-2)[0].id + 1
+          continue
+        }
         if (!informations[model_item] && Boolean(model.required)) 
           throw new Error(`${model_item.slice(0, 1).toUpperCase() + model_item.slice(1)} field is required!`)
   
@@ -135,6 +143,10 @@ const Sweet = {
         table_name = name
       }
       Sweet.models[db_name][table_name][field] = model[field]
+      if (!Sweet.models[db_name][table_name].id) Sweet.models[db_name][table_name].id = {
+        type: 'number',
+        required: false
+      }
       for (const item of Sweet.databases[db_name][table_name]) {
         if (!item[field]) {
           if (model[field].type === 'map') {
