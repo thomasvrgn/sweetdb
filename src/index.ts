@@ -16,4 +16,3 @@ new Sweet.Field('Palamazon:Users', 'age', {
 
 console.log(db.get('Palamazon:Users'));
 
-(new Sweet.Save()).latest()

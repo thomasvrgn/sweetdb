@@ -1,6 +1,5 @@
-import * as FS from 'fs'
+import * as FS from 'fs-extra'
 import * as Path from 'path'
-import { cpuUsage } from 'process'
 
 const Sweet = {
   db_name: '',
@@ -174,25 +173,17 @@ const Sweet = {
 
     constructor () { }
 
-    public save () {
-      return new Promise (function (resolve, reject) {
-        FS.exists(Path.resolve(Path.join(__dirname, 'temp')), function (exists) {
-          if (!exists) FS.mkdirSync(Path.resolve(Path.join(__dirname, 'temp')))
-          FS.writeFile(Path.resolve(Path.join(__dirname, 'temp', Date.now().toString() + '.json')), JSON.stringify(Sweet.databases), function (error) {
-            if (error) reject(error)
-            resolve()
-          })
-        })
-      })
-    }
-
-    public latest () {
+    public latest () : Promise<string>{
       return new Promise (function (resolve, reject) {
         const path = Path.resolve(Path.join(__dirname, 'temp'))
         FS.exists(path, function (exists) {
-          if (!exists) reject(`Temp folder not found.`)
+          if (!exists) {
+            FS.mkdirSync(Path.resolve(Path.join(__dirname, 'temp')))
+            return resolve(undefined)
+          }
           FS.readdir(path, function (error, content) {
             if (error) reject(error)
+            if (content.length === 0) return resolve(undefined)
             const latestFile = content.reduce(function (last, current) {
 
               const currentFileDate = new Date(FS.statSync(Path.join(path, current)).mtime)
@@ -200,8 +191,34 @@ const Sweet = {
 
               return (currentFileDate.getTime() > lastFileDate.getTime()) ? current : last
             })
-            console.log(latestFile)
+            resolve(latestFile)
           })
+        })
+      })
+    }
+
+    public async load () {
+      const latest = await this.latest()
+      console.log(latest)
+    }
+
+    public async save () {
+      return new Promise (function (resolve, reject) {
+        const path = Path.resolve(Path.join(__dirname, 'temp'))
+        FS.exists(path, async function (exists) {
+          if (!exists) FS.mkdirSync(Path.resolve(Path.join(__dirname, 'temp')))
+            const latestFile = await (new Sweet.Save()).latest()
+            if (latestFile !== undefined) {
+              const latestFileContent = await FS.readFile(Path.join(path, latestFile), 'utf-8')
+              const currentFileContent = JSON.stringify(Sweet.databases)
+              if (latestFileContent === currentFileContent) {
+                return resolve()
+              }
+            }
+            await FS.writeFile(Path.join(path, Date.now().toString() + '.json'), JSON.stringify(Sweet.databases), function (error) {
+              if (error) reject(error)
+              resolve()
+            })
         })
       })
     }
