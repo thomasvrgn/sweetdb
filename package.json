@@ -1,7 +1,7 @@
 {
   "name": "sweetdb",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "💾 Simple data storage.",
   "main": "main.js",
   "directories": {
     "test": "tests"
