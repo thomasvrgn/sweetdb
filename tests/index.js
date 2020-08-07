@@ -1,4 +1,4 @@
-const Sweet = require('../dist/sweet')
+const Sweet = require('../dist/sweet').default
 
 const db = new Sweet.Load('db.sweet')
 

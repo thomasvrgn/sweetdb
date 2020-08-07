@@ -1,7 +1,7 @@
 import Database from './database/database'
 import Interpreter from './interpreter'
 
-module.exports = {
+export default {
   Load: Interpreter,
   Field: Database.Field,
   Table: Database.Table,
@@ -9,6 +9,7 @@ module.exports = {
   Save: Database.Save,
   Database: Database.Database
 }
+
 
 process.on('beforeExit', async function () {
   
