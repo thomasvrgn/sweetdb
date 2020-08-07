@@ -54,8 +54,8 @@ database App {
 You must then load this file in your Javascript code. 
 
 ```js
-const sweet = require('sweetdb'),
-		db = new sweet.Database('path/to/file.sweet')
+const Sweet = require('sweetdb'),
+		db = new Sweet.Database('path/to/file.sweet')
 ```
 
 You can now interact with your database easily:
@@ -115,42 +115,48 @@ database App {
 ### Create database
 
 ```ts
-database.create_database(name: string) : void
+class Database {
+	constructor (name: string)
+}
 // Create a database with the specified name.
 ```
 
 Example:
 
 ```ts
-database.create_database('App')
+new Sweet.Database('app')
 ```
 
 ### Create table
 
 ```ts
-database.create_table(name: string) : void
+class Table {
+	constructor (name: string, model: Object = {})
+}
 // Create a table with the specified name
 ```
 
 Example:
 
 ```ts
-database.create_table('App:Users')
+new Sweet.Table('App:Users')
 // OR
-database.create_table('Users')
+new Sweet.Table('Users')
 ```
 
 ### Create_field
 
 ```ts
-database.create_field(name: string, field: string, model: Object) : void
+class Field {
+	constructor (name: string, field: string, model: Object)
+}
 // Create or update field
 ```
 
 Example:
 
 ```ts
-database.create_field('App:Users', 'age', {
+new Sweet.Field('App:Users', 'age', {
 	age: {
 		type: 'number',
 		required: true
@@ -161,20 +167,24 @@ database.create_field('App:Users', 'age', {
 ### Create template
 
 ```ts
-database.create_template(name: string, regex: RegExp) : void
+class Template {
+	constructor (name: string, regex: RegExp)
+}
 // Creating template
 ```
 
 Example:
 
 ```ts
-database.create_template('email', /someRegexHere/)
+new Sweet.Template('email', /someRegexHere/)
 ```
 
 ### Get values
 
 ```ts
-database.get(name: string, object = Object = {}) : Array<Object>
+class Database {
+	public get (name: string, object = {}) : Array<Object>
+}
 // Getting informations from specified database.
 ```
 
@@ -191,7 +201,10 @@ database.get('Users')
 ### Remove values
 
 ```ts
-database.remove(name: string, object = Object = {}) : void
+class Database {
+	public remove (name: string, object = Object = {}) : void	
+}
+
 // Removing informations from specified database.
 ```
 
@@ -208,7 +221,9 @@ database.remove('Users')
 ### Update values
 
 ```ts
-database.update(name: string, object = Object = {}) : void
+class Database {
+	public update (name: string, object = Object = {}) : void	
+}
 // Updating informations from specified database.
 ```
 
@@ -225,7 +240,9 @@ database.update('Users')
 ### Set values
 
 ```ts
-database.set(name: string, object = Object = {}) : void
+class Database {
+	public set (name: string, object = Object = {}) : void	
+}
 // Setting informations from specified database.
 ```
 
