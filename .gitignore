@@ -1,5 +1,13 @@
-package-lock.json
+# Node
 node_modules
-bin/
+
+# Builds
 dist
-.tmp
+
+# Yarn
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions

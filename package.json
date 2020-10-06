@@ -1,34 +1,40 @@
 {
   "name": "sweetdb",
   "version": "0.0.1",
-  "description": "💾 Simple data storage.",
-  "main": "dist/sweet.js",
-  "directories": {
-    "test": "tests"
-  },
+  "description": "SweetDB is a data storage system written in Typescript. It has its own schematics format and it's stored temporarily.",
+  "main": "src/index.ts",
+  "repository": "git@github.com:NessMC/sweetdb.gitproject-repository-url",
+  "author": "NessMC <contact@nessmc.fr>",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "node_modules\\.bin\\tsc --project tsconfig.json",
-    "compile:watch": "node_modules\\.bin\\tsc --project tsconfig.json --watch",
-    "start": "node dist/index.js",
-    "start:watch": "nodemon dist/index.js",
-    "build": "node_modules\\.bin\\webpack",
-    "build:watch": "node_modules\\.bin\\webpack --watch"
+    "build": "./node_modules/.bin/tsc",
+    "dev": "./node_modules/.bin/ts-node --project tsconfig.json -r tsconfig-paths/register .\\src\\index.ts",
+    "dev:watch": "nodemon src/index.ts --exec \"npm run dev\" --ignore *.json",
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:watch": "./node_modules/.bin/esw **/*.ts -w",
+    "lint:fix": "./node_modules/.bin/eslint . --fix",
+    "test": "./node_modules/.bin/jest",
+    "test:watch": "./node_modules/.bin/jest --watch",
+    "bundle": "./node_modules/.bin/webpack-cli",
+    "bundle:watch": "./node_modules/.bin/webpack-cli --watch",
+    "docker:build": "docker build -t sweetdb .",
+    "docker:run": "docker run sweetdb"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NessMC/sweetdb.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NessMC/sweetdb/issues"
-  },
-  "homepage": "https://github.com/NessMC/sweetdb#readme",
-  "devDependencies": {
-    "@types/node": "^14.0.5",
-    "fs-extra": "^9.0.1",
-    "typescript": "^3.9.7",
-    "webpack": "^4.44.1"
+  "license": "MIT",
+  "dependencies": {
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.2",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-typescript": "^11.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.4.1",
+    "ts-loader": "^8.0.4",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   }
 }

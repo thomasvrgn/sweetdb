@@ -1,256 +1,126 @@
-# SweetDB
-SweetDB is a data manager and data store written in TypeScript. With Sweet you have the choice between storing data in a dynamic and temporary way or in a static and permanent way. Designing a database has become simple with the implementation of a file system specific to Sweet. No knowledge is now necessary to create and manage a database.
+<h3 align="center">SweetDB</h3>
 
-## Install it
+<div align="center">
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/nessmc/sweetdb.svg)](https://github.com/nessmc/sweetdb/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/nessmc/sweetdb.svg)](https://github.com/nessmc/sweetdb/pulls)
+[![License](https://img.shields.io/badge/license-Creative%20commons-blue.svg)](/LICENSE)
+[![BCH compliance](https://bettercodehub.com/edge/badge/nessmc/sweetdb?branch=master)](https://bettercodehub.com/)
+[![Discord](https://discordapp.com/api/guilds/738827425043185717/widget.png?style=shield)](https://discord.gg/discord-invite)
+ 
+</div>
+
+---
+
+<p align="center"> 
+    Simple, usable and beginny-friendly  database manager written in Typescript
+    <br> 
+</p>
+
+## 📝 Table of Contents
+
+-   [About](#about)
+-   [Getting Started](#getting_started)
+-   [Manual installation](#manual)
+-   [Build](#build)
+-   [Usage](#usage)
+-   [TODO](./TODO.md)
+-   [Contributing](./CONTRIBUTING.md)
+-   [Authors](#authors)
+
+## 🧐 About <a name = "about"></a>
+
+SweetDB is a data storage system written in Typescript. It has its own schematics format and it's stored temporarily.
+
+## 🏁 Getting Started <a name = "getting_started"></a>
+
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes. See
+[Manual installation](#manual) for notes on how to install the project on a live
+system.
+
+### Prerequisites
+
+To install SweetDB, you will need:
+
+```
+Node.JS > 13
+NPM > 6
+```
+
+### Installing
+
+---
+
+## 🔧 Running the tests <a name = "tests"></a>
+
+To run the tests:
+
+```
+ yarn test
+```
+
+### Break down into end to end tests
+
+No tests for the moment.
+
+### And coding style tests
+
+The linter is present in order to allow anyone to be able to contribute while
+being in the main coherence of the code.
+
+```
+ yarn lint
+```
+
+## 🎈 Usage <a name="usage"></a>
+
+No usage informations for the moment.
+
+## 🚀 Manual installation <a name = "manual"></a>
+
+To deploy SweetDB, do:
 
 ```bash
- # With NPM
- $ npm i sweetdb
+ $ git clone git@github.com:nessmc/sweetdb.git
 
- # Cloning repository
- $ git clone https://github.com/NessMC/sweetdb
- $ cd sweetdb
- 
- # Installing NPM dependencies.
- $ npm install
- 
- # Building SweetDB
- $ npm run build
- 
- # Starting SweetDB
- $ npm run start
+ # OR
+
+ $ git init
+ $ git remote add origin git@github.com:nessmc/sweetdb.git
+ $ git pull
+
+ # OR
+
+ $ docker pull nessmcfr/sweetdb
+ $ docker run nessmcfr/sweetdb
 ```
 
+## 🚀 Build <a name = "build"></a>
 
+To build the project, do:
 
-## Use it
+```bash
+ $ yarn bundle 
+ # That generate file called bundle.js, just run it with : node dist/bundle.js
 
-First of all, you need to create your database template. For this, you will proceed to the creation of a Sweet file. Creating, editing and modifying this kind of files doesn't require any real programming knowledge.
+ # OR
 
-```
-# database.sweet
+ $ docker-compose build
+ # OR
+ $ yarn docker:build
 
-#Database name
-database App {
-	# Table name
-	table Users {
-		# Field name
-		field username {
-            - type => string # Value type must be string
-            - required => true # Field is required
-            - maximum length => 16 # Field maximum length is 16
-            - minimum length => 4 # Field minimum length is 4
-		}
-        field password {
-            - type => string
-            - required => true
-            - maximum length => 32
-            - minimum length => 8
-        }
-	}
-}
-```
-
-You must then load this file in your Javascript code. 
-
-```js
-const Sweet = require('sweetdb'),
-		db = new Sweet.Database('path/to/file.sweet')
-```
-
-You can now interact with your database easily:
-
-```js
-db.set('Users',  {
-	username:  'NessMC',
-	password:  '123456789',
-	email:  'contact@nessmc.fr'
-})
-
-console.log(db.get('Users', {
-	username: 'NessMC'
-})
-
-/*
-[
-	{
-		username: 'NessMC',
-		password: '123456789',
-		email: 'contact@nessmc.fr'
-	}
-]
-*/
-```
-
-## Create templates
-
-With Sweet, you can create templates for your fields. This allows the validation of data matching with the template. Their operation is based on regex.
+ $ docker run sweetdb_app
+ # OR
+ $ yarn docker:start
 
 ```
-# template.sweet
-template email {
-	- regex => (\w|\d)+@(\w|\d)+\.\w{2}
-}
-```
 
-You can of course use it in the previously defined file containing the template of your database.
+## ✍️ Authors <a name = "authors"></a>
 
-```
-# database.sweet
+-   [@NessMC](https://github.com/NessMC) - Idea & Initial work
 
-database App {
-	table Users {
-		field email {
-            - type => string
-            - template => email
-            - required => true
-            - minimum length => 5
-        }
-	}
-}
-```
-
-## Javascript methods
-
-### Create database
-
-```ts
-class Database {
-	constructor (name: string)
-}
-// Create a database with the specified name.
-```
-
-Example:
-
-```ts
-new Sweet.Database('app')
-```
-
-### Create table
-
-```ts
-class Table {
-	constructor (name: string, model: Object = {})
-}
-// Create a table with the specified name
-```
-
-Example:
-
-```ts
-new Sweet.Table('App:Users')
-// OR
-new Sweet.Table('Users')
-```
-
-### Create_field
-
-```ts
-class Field {
-	constructor (name: string, field: string, model: Object)
-}
-// Create or update field
-```
-
-Example:
-
-```ts
-new Sweet.Field('App:Users', 'age', {
-	age: {
-		type: 'number',
-		required: true
-	}
-})
-```
-
-### Create template
-
-```ts
-class Template {
-	constructor (name: string, regex: RegExp)
-}
-// Creating template
-```
-
-Example:
-
-```ts
-new Sweet.Template('email', /someRegexHere/)
-```
-
-### Get values
-
-```ts
-class Database {
-	public get (name: string, object = {}) : Array<Object>
-}
-// Getting informations from specified database.
-```
-
-Example:
-
-```ts
-database.get('Users', {
-	username: 'NessMC'
-})
-// OR
-database.get('Users')
-```
-
-### Remove values
-
-```ts
-class Database {
-	public remove (name: string, object = Object = {}) : void	
-}
-
-// Removing informations from specified database.
-```
-
-Example:
-
-```ts
-database.remove('Users', {
-	username: 'NessMC'
-})
-// OR
-database.remove('Users')
-```
-
-### Update values
-
-```ts
-class Database {
-	public update (name: string, object = Object = {}) : void	
-}
-// Updating informations from specified database.
-```
-
-Example:
-
-```ts
-database.update('Users', {
-	username: 'NessMC'
-})
-// OR
-database.update('Users')
-```
-
-### Set values
-
-```ts
-class Database {
-	public set (name: string, object = Object = {}) : void	
-}
-// Setting informations from specified database.
-```
-
-Example:
-
-```ts
-database.set('Users', {
-	username: 'NessMC',
-	password: '321654987'
-})
-```
+See also the list of
+[contributors](https://github.com/nessmc/sweetdb/contributors) who
+participated in this project.

@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "ignorePatterns": "*.js",
+  "extends": [
+    "airbnb-typescript/base"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "eol-last": "off",
+    "spaced-comment": "off",
+    "linebreak-style": "off"
+  },
+  "env": {
+    "jest": true
+  }
+}
